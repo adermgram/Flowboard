@@ -1,5 +1,6 @@
 package com.adam.flowboard.service;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -31,4 +32,8 @@ public class BoardService {
         return board;
     }
     
+    public List<Board> getBoards(UUID workspaceId){
+        Workspace workspace = workspaceRepository.findById(workspaceId).orElseThrow();
+        return workspace.getBoards();
+    }
 }

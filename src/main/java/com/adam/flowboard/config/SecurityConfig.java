@@ -21,7 +21,8 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/api/workspaces/**"
+                                "/api/workspaces/**",
+                                "/api/boards/**"
                                 
                         ).permitAll()
                         .anyRequest().authenticated()

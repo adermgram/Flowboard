@@ -64,4 +64,8 @@ public class Workspace {
         boards.add(board);
         board.setWorkspace(this);
     }
+
+    public List<Board> getBoards(){
+        return boards;
+    }
 }
