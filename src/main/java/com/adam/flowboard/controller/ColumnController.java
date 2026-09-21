@@ -1,7 +1,9 @@
 package com.adam.flowboard.controller;
 
+import java.util.List;
 import java.util.UUID;
 
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,5 +28,11 @@ public class ColumnController {
     public Column createColumn(@PathVariable UUID boardId,  @RequestBody CreateColumnRequest request){
         return columnService.createColumn(boardId, request.name(), request.position());
     }
+
+    @GetMapping("/{boardId}/columns")
+    public List<Column> getColumns(@PathVariable UUID boardId){
+        return columnService.getColumns(boardId);
+    }
+
     
 }

@@ -4,13 +4,14 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.adam.flowboard.domain.entity.Board;
 import com.adam.flowboard.domain.entity.Workspace;
 import com.adam.flowboard.repository.BoardRepository;
 import com.adam.flowboard.repository.WorkspaceRepository;
 
-import jakarta.transaction.Transactional;
+
 
 @Service
 public class BoardService {
@@ -32,6 +33,7 @@ public class BoardService {
         return board;
     }
     
+    @Transactional(readOnly = true)
     public List<Board> getBoards(UUID workspaceId){
         Workspace workspace = workspaceRepository.findById(workspaceId).orElseThrow();
         return workspace.getBoards();
