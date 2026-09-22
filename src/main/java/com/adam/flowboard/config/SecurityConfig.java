@@ -22,7 +22,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/api/workspaces/**",
-                                "/api/boards/**"
+                                "/api/boards/**",
+                                "/api/auth/**"
                                 
                         ).permitAll()
                         .anyRequest().authenticated()

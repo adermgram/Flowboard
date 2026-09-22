@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.adam.flowboard.domain.entity.User;
 import com.adam.flowboard.dto.auth.RegisterRequest;
 import com.adam.flowboard.dto.auth.UserResponse;
+import com.adam.flowboard.exception.DuplicateEmailException;
 import com.adam.flowboard.repository.UserRepository;
 
 @Service
@@ -26,7 +27,7 @@ public class AuthService {
         String email = request.email().trim().toLowerCase(Locale.ROOT);
 
         if (userRepository.existsByEmail(email)){
-            throw new RuntimeException("Email already exists");
+            throw new DuplicateEmailException("Email already exists");
         }
 
         String hashedPassword =
