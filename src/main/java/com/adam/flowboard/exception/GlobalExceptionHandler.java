@@ -33,6 +33,21 @@ public class GlobalExceptionHandler {
                                 .body(error);
         }
 
+        @ExceptionHandler(InvalidCredentialsException.class)
+        public ResponseEntity<ErrorResponse> handleDuplicateEmail(
+                        InvalidCredentialsException exception,
+                        HttpServletRequest request) {
+
+                ErrorResponse error = new ErrorResponse(
+                                exception.getMessage(),
+                                Instant.now(),
+                                request.getRequestURI());
+
+                return ResponseEntity
+                                .status(HttpStatus.NOT_FOUND)
+                                .body(error);
+        }
+
         @ExceptionHandler(MethodArgumentNotValidException.class)
         public ResponseEntity<ValidationErrorResponse> handleValidationErrors(
                         MethodArgumentNotValidException exception,

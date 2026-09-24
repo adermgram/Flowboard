@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.adam.flowboard.dto.auth.LoginRequest;
 import com.adam.flowboard.dto.auth.RegisterRequest;
 import com.adam.flowboard.dto.auth.UserResponse;
 import com.adam.flowboard.service.AuthService;
@@ -24,5 +25,12 @@ public class AuthController {
     public UserResponse register(@Valid @RequestBody RegisterRequest request){
         return authService.register(request);
     }
+
+    @PostMapping("/login")
+    public UserResponse login(@Valid @RequestBody LoginRequest request){
+        return authService.login(request);
+    }
+
+
     
 }
