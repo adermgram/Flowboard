@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.adam.flowboard.dto.auth.LoginRequest;
+import com.adam.flowboard.dto.auth.LoginResponse;
 import com.adam.flowboard.dto.auth.RegisterRequest;
 import com.adam.flowboard.dto.auth.UserResponse;
 import com.adam.flowboard.service.AuthService;
@@ -27,7 +28,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public UserResponse login(@Valid @RequestBody LoginRequest request){
+    public LoginResponse login(@Valid @RequestBody LoginRequest request){
         return authService.login(request);
     }
 

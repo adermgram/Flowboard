@@ -1,13 +1,14 @@
 package com.adam.flowboard.service;
 
 import java.util.Locale;
-import java.util.Optional;
+
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.adam.flowboard.domain.entity.User;
 import com.adam.flowboard.dto.auth.LoginRequest;
+import com.adam.flowboard.dto.auth.LoginResponse;
 import com.adam.flowboard.dto.auth.RegisterRequest;
 import com.adam.flowboard.dto.auth.UserResponse;
 import com.adam.flowboard.exception.DuplicateEmailException;
@@ -18,10 +19,12 @@ import com.adam.flowboard.repository.UserRepository;
 public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
-    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder){
+    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService){
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
     }
 
 
@@ -49,7 +52,7 @@ public class AuthService {
 
     }
 
-    public UserResponse login(LoginRequest request){
+    public LoginResponse login(LoginRequest request){
 
         String email = request.email().trim().toLowerCase(Locale.ROOT);
 
@@ -66,8 +69,10 @@ public class AuthService {
             throw new InvalidCredentialsException();
         }
 
-        return new UserResponse(user.getId(), user.getName(), user.getEmail());
+        
+        String token = jwtService.generateToken(user.getId());
 
+        return new LoginResponse(token);
     }
     
 }
