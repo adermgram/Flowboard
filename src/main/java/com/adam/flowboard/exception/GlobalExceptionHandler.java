@@ -69,4 +69,19 @@ public class GlobalExceptionHandler {
                                 .body(response);
         }
 
+        @ExceptionHandler(UserNotFoundException.class)
+        public ResponseEntity<ErrorResponse> handleUserNotFound(
+                        UserNotFoundException exception,
+                                 HttpServletRequest request) {
+
+                ErrorResponse error = new ErrorResponse(
+                                exception.getMessage(),
+                                Instant.now(),
+                                request.getRequestURI());
+
+                return ResponseEntity
+                                .status(HttpStatus.NOT_FOUND)
+                                .body(error);
+        }
+
 }

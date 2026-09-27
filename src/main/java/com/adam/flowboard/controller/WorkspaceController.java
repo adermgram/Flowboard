@@ -1,12 +1,15 @@
 package com.adam.flowboard.controller;
 
+import java.util.UUID;
+
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.adam.flowboard.domain.entity.Workspace;
 import com.adam.flowboard.dto.workspace.CreateWorkspaceRequest;
+import com.adam.flowboard.dto.workspace.WorkspaceResponse;
 import com.adam.flowboard.service.WorkspaceService;
 
 @RestController
@@ -17,10 +20,15 @@ public class WorkspaceController {
     public WorkspaceController(WorkspaceService workspaceService){
         this.workspaceService = workspaceService;
     }
-
+    
     @PostMapping
-    public Workspace createWorkspace(@RequestBody CreateWorkspaceRequest request){
-        return workspaceService.createWorkspace(request.name());
+    public WorkspaceResponse createWorkspace(
+        @RequestBody CreateWorkspaceRequest request, 
+        Authentication authentication
+    ){
+        UUID userId = (UUID) authentication.getPrincipal();
+    
+        return workspaceService.createWorkspace(userId, request.name());
     }
     
 }
