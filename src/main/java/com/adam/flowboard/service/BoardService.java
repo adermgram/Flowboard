@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.adam.flowboard.domain.entity.Board;
 import com.adam.flowboard.domain.entity.Workspace;
+import com.adam.flowboard.exception.ForbiddenException;
 import com.adam.flowboard.repository.BoardRepository;
 import com.adam.flowboard.repository.WorkspaceRepository;
 
@@ -18,10 +19,16 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
     private final WorkspaceRepository workspaceRepository;
+	private final WorkspaceMembershipService workspaceMembershipService;
 
-    public BoardService(BoardRepository boardRepository, WorkspaceRepository workspaceRepository){
+    public BoardService(
+            BoardRepository boardRepository, 
+            WorkspaceRepository workspaceRepository, 
+            WorkspaceMembershipService workspaceMembershipService
+        ){
         this.boardRepository = boardRepository;
         this.workspaceRepository = workspaceRepository;
+        this.workspaceMembershipService = workspaceMembershipService;
     }
 
     @Transactional
@@ -34,7 +41,11 @@ public class BoardService {
     }
     
     @Transactional(readOnly = true)
-    public List<Board> getBoards(UUID workspaceId){
+    public List<Board> getBoards(UUID userId, UUID workspaceId){
+        
+        if (!workspaceMembershipService.isMember(userId, workspaceId)){
+            throw new ForbiddenException();
+        }
         Workspace workspace = workspaceRepository.findById(workspaceId).orElseThrow();
         return workspace.getBoards();
     }
