@@ -25,10 +25,10 @@ public class BoardController {
         this.boardService = boardService;
     }
 
-    @PostMapping("{workspaceId}/boards")
-    public Board createBoard(@RequestBody CreateBoardRequest request, @PathVariable UUID workspaceId){
-
-        return boardService.createBoard(workspaceId, request.name());
+    @PostMapping("/{workspaceId}/boards")
+    public Board createBoard(@RequestBody CreateBoardRequest request, @PathVariable UUID workspaceId, Authentication authentication){
+        UUID userId = (UUID) authentication.getPrincipal();
+        return boardService.createBoard(workspaceId, userId, request.name());
     }
 
     @GetMapping("{workspaceId}/boards")

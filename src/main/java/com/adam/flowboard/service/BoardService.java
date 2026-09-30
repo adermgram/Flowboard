@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.adam.flowboard.domain.entity.Board;
 import com.adam.flowboard.domain.entity.Workspace;
+import com.adam.flowboard.domain.entity.WorkspaceMembership;
+import com.adam.flowboard.domain.entity.WorkspaceRole;
 import com.adam.flowboard.exception.ForbiddenException;
 import com.adam.flowboard.repository.BoardRepository;
 import com.adam.flowboard.repository.WorkspaceRepository;
@@ -32,11 +34,21 @@ public class BoardService {
     }
 
     @Transactional
-    public Board createBoard(UUID workspaceId, String name){
-        Workspace workspace = workspaceRepository.findById(workspaceId).orElseThrow();
+    public Board createBoard(UUID workspaceId, UUID userId, String name) {
+
+        workspaceMembershipService.requireRole(
+            userId,
+            workspaceId,
+            WorkspaceRole.ADMIN
+        );
+
+        Workspace workspace = workspaceRepository
+            .findById(workspaceId)
+            .orElseThrow();
 
         Board board = new Board(name);
         workspace.addBoard(board);
+
         return board;
     }
     

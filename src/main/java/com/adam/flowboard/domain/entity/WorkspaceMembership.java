@@ -52,4 +52,9 @@ public class WorkspaceMembership {
         this.workspace = workspace;
         this.role = role;
     }
+
+    public WorkspaceRole getRole() {
+        return role;
+    }
+
 }

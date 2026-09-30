@@ -99,4 +99,19 @@ public class GlobalExceptionHandler {
                                 .body(error);
         }
 
+        @ExceptionHandler(MembershipNotFoundException.class)
+        public ResponseEntity<ErrorResponse> handleMembershipNotFound(
+                        MembershipNotFoundException exception,
+                                 HttpServletRequest request) {
+
+                ErrorResponse error = new ErrorResponse(
+                                exception.getMessage(),
+                                Instant.now(),
+                                request.getRequestURI());
+
+                return ResponseEntity
+                                .status(HttpStatus.NOT_FOUND)
+                                .body(error);
+        }
+
 }
